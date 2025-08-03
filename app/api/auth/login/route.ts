@@ -1,73 +1,50 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { sql } from "@/lib/db"
-import bcrypt from "bcryptjs"
-import jwt from "jsonwebtoken"
-
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
+import { verifyPassword, generateToken } from "@/lib/simple-auth"
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json()
+    const { username, password } = await request.json()
 
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
+    if (!username || !password) {
+      return NextResponse.json({ error: "Username and password required" }, { status: 400 })
     }
 
-    // Check if users table exists
-    const tableExists = await sql`
-      SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_schema = 'public' 
-        AND table_name = 'users'
-      );
-    `
-
-    if (!tableExists[0]?.exists) {
-      return NextResponse.json({ error: "User system not initialized. Please run database setup." }, { status: 500 })
-    }
-
-    // Find user by email
+    // Find user - using password_hash column
     const users = await sql`
-      SELECT id, username, email, password, role, created_at 
+      SELECT id, username, email, password_hash, role, created_at, updated_at
       FROM users 
-      WHERE email = ${email}
+      WHERE username = ${username}
     `
 
     const user = users[0]
     if (!user) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
     }
 
     // Verify password
-    const isValid = await bcrypt.compare(password, user.password)
+    const isValid = await verifyPassword(password, user.password_hash)
     if (!isValid) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
-      {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-      },
-      JWT_SECRET,
-      { expiresIn: "7d" },
-    )
+    // Generate token
+    const token = generateToken(user.id, user.role)
 
     return NextResponse.json({
-      message: "Login successful",
+      success: true,
       token,
       user: {
         id: user.id,
         username: user.username,
         email: user.email,
         role: user.role,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
       },
     })
   } catch (error) {
     console.error("Login error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Login failed" }, { status: 500 })
   }
 }

@@ -3,75 +3,38 @@ import { sql } from "@/lib/db"
 
 export async function GET() {
   try {
-    // First, try to check if the settings table exists and get its structure
-    const tableExists = await sql`
-      SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_schema = 'public' 
-        AND table_name = 'settings'
-      );
-    `
-
-    if (!tableExists[0]?.exists) {
-      // Table doesn't exist, return default settings
-      return NextResponse.json({
-        store_name: "POS System",
-        logo_url: "",
-        store_address: "",
-        store_phone: "",
-      })
-    }
-
-    // Check if the table has the expected columns
-    const columns = await sql`
-      SELECT column_name 
-      FROM information_schema.columns 
-      WHERE table_name = 'settings' 
-      AND table_schema = 'public'
-    `
-
-    const columnNames = columns.map((col: any) => col.column_name)
-
-    if (!columnNames.includes("key") || !columnNames.includes("value")) {
-      // Table exists but doesn't have expected structure, return defaults
-      return NextResponse.json({
-        store_name: "POS System",
-        logo_url: "",
-        store_address: "",
-        store_phone: "",
-      })
-    }
-
-    // Table exists with correct structure, fetch settings
     const settings = await sql`
-      SELECT key, value 
+      SELECT store_name, logo_url 
       FROM settings 
-      WHERE key IN ('store_name', 'logo_url', 'store_address', 'store_phone')
+      ORDER BY id DESC 
+      LIMIT 1
     `
 
-    const settingsObj = settings.reduce((acc: any, setting: any) => {
-      acc[setting.key] = setting.value || ""
-      return acc
-    }, {})
-
-    // Provide defaults for any missing settings
-    const response = {
-      store_name: settingsObj.store_name || "POS System",
-      logo_url: settingsObj.logo_url || "",
-      store_address: settingsObj.store_address || "",
-      store_phone: settingsObj.store_phone || "",
+    if (settings.length === 0) {
+      return NextResponse.json({
+        success: true,
+        settings: {
+          store_name: "POS System",
+          logo_url: null,
+        },
+      })
     }
 
-    return NextResponse.json(response)
-  } catch (error) {
-    console.error("Error fetching public settings:", error)
-
-    // Return default settings if any error occurs
     return NextResponse.json({
-      store_name: "POS System",
-      logo_url: "",
-      store_address: "",
-      store_phone: "",
+      success: true,
+      settings: {
+        store_name: settings[0].store_name || "POS System",
+        logo_url: settings[0].logo_url || null,
+      },
+    })
+  } catch (error) {
+    console.error("Public settings error:", error)
+    return NextResponse.json({
+      success: true,
+      settings: {
+        store_name: "POS System",
+        logo_url: null,
+      },
     })
   }
 }
