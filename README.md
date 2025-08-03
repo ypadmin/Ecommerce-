@@ -1,47 +1,69 @@
 # POS System - Point of Sale Application
 
-A modern, full-featured Point of Sale (POS) system built with Next.js, TypeScript, and Tailwind CSS. This system is designed for retail businesses to manage products, process sales, track inventory, and generate reports.
+A modern, full-featured Point of Sale (POS) system built with Next.js, TypeScript, and Neon Database. Designed for retail businesses in Laos with LAK currency support.
 
 ## 🚀 Features
 
-### Core Functionality
-- **Product Management**: Add, edit, delete, and categorize products
-- **Inventory Tracking**: Real-time stock management with low stock alerts
-- **Sales Processing**: Complete POS interface with cart management
-- **Receipt Generation**: Professional receipt printing with store branding
-- **Payment Methods**: Support for cash, card, and digital payments
-- **Sales Analytics**: Comprehensive reporting and analytics dashboard
+### 📊 Dashboard & Analytics
+- Real-time sales statistics and charts
+- Revenue tracking and profit analysis
+- Top-selling products insights
+- Payment method analytics
+- Date range filtering for reports
 
-### User Management
-- **Role-Based Access**: Admin and Cashier roles with different permissions
-- **User Authentication**: Secure JWT-based authentication system
-- **Profile Management**: User profile editing and password management
-- **Activity Logging**: Track user actions and system events
+### 🛍️ Product Management
+- Complete product catalog with categories
+- Image upload and management
+- Stock tracking and low stock alerts
+- Barcode support for quick scanning
+- Bulk product operations
 
-### Store Management
-- **Store Settings**: Customize store name, logo, and tax rates
-- **Category Management**: Organize products into categories
-- **Dynamic Branding**: Store logo and name appear throughout the system
-- **Multi-currency Support**: Currently configured for LAK (Lao Kip)
+### 💰 Point of Sale
+- Intuitive touch-friendly interface
+- Quick product search and selection
+- Shopping cart with quantity adjustments
+- Multiple payment methods (Cash, Card, Bank Transfer)
+- Receipt generation and printing
+- Tax calculation support
 
-### Analytics & Reporting
-- **Sales Dashboard**: Real-time sales statistics and trends
-- **Profit Analysis**: Track profit margins and financial performance
-- **Product Performance**: Identify top-selling products
-- **Payment Analytics**: Analyze payment method preferences
-- **Date Range Filtering**: Generate reports for specific time periods
+### 👥 User Management
+- Role-based access control (Admin, Cashier)
+- User profile management
+- Secure authentication with JWT
+- Password reset functionality
+- Activity logging
+
+### 🏪 Store Settings
+- Customizable store branding
+- Logo upload and management
+- Tax rate configuration
+- Receipt customization
+- System preferences
+
+### 📱 Mobile Responsive
+- Optimized for tablets and mobile devices
+- Touch-friendly interface
+- Responsive design for all screen sizes
+- Mobile navigation
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS with custom components
-- **Database**: Neon PostgreSQL (serverless)
-- **Authentication**: JWT with bcrypt password hashing
-- **Charts**: Recharts for data visualization
-- **UI Components**: Radix UI primitives with custom styling
-- **Icons**: Lucide React icons
+- **Styling**: Tailwind CSS, Radix UI Components
+- **Database**: Neon PostgreSQL
+- **Authentication**: JWT with bcrypt
+- **Charts**: Recharts
+- **Icons**: Lucide React
+- **Deployment**: Vercel
 
-## 📦 Installation
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- pnpm (recommended) or npm
+- Neon Database account
+- Git
+
+## 🚀 Installation
 
 1. **Clone the repository**
    \`\`\`bash
@@ -59,16 +81,17 @@ A modern, full-featured Point of Sale (POS) system built with Next.js, TypeScrip
    \`\`\`env
    DATABASE_URL=your_neon_database_url
    JWT_SECRET=your_jwt_secret_key
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
    \`\`\`
 
 4. **Set up the database**
-   Run the SQL scripts in the `scripts/` folder in order:
+   Run the SQL scripts in order:
    \`\`\`bash
-   # Execute scripts/001-create-tables.sql in your database
+   # Execute scripts/001-create-tables.sql in your Neon database
    # This creates all necessary tables and indexes
    \`\`\`
 
-5. **Run the development server**
+5. **Start the development server**
    \`\`\`bash
    pnpm dev
    \`\`\`
@@ -76,126 +99,173 @@ A modern, full-featured Point of Sale (POS) system built with Next.js, TypeScrip
 6. **Access the application**
    Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 🗄️ Database Schema
+## 📊 Database Schema
 
-The system uses the following main tables:
-- `users` - User accounts and authentication
-- `categories` - Product categories
-- `products` - Product catalog with inventory
-- `sales` - Sales transactions
-- `sale_items` - Individual items in each sale
-- `settings` - Store configuration and branding
+### Core Tables
+- **users** - User accounts and authentication
+- **categories** - Product categories
+- **products** - Product catalog with stock tracking
+- **sales** - Sales transactions
+- **sale_items** - Individual items in each sale
+- **settings** - Store configuration and preferences
 
-## 🔐 Default Credentials
+### Key Features
+- Foreign key relationships for data integrity
+- Indexes for optimal query performance
+- Automatic timestamps for audit trails
+- Stock tracking with quantity management
+- Multi-currency support (LAK primary)
 
-After running the database setup, you can log in with:
-- **Username**: admin
-- **Password**: admin123
+## 🔐 Authentication & Security
 
-## 📱 Usage
+- **JWT-based authentication** with secure token management
+- **Password hashing** using bcrypt
+- **Role-based access control** (Admin, Cashier)
+- **SQL injection prevention** with parameterized queries
+- **XSS protection** with input sanitization
+- **CSRF protection** built into Next.js
 
-### For Administrators
-1. **Dashboard**: View sales statistics and system overview
-2. **Products**: Manage product catalog and inventory
-3. **Categories**: Organize products into categories
-4. **Users**: Manage user accounts and permissions
-5. **Settings**: Configure store branding and tax rates
-6. **Sales Reports**: Generate and analyze sales data
+## 📱 Usage Guide
 
-### For Cashiers
-1. **POS Interface**: Process customer transactions
-2. **Product Search**: Quick product lookup and barcode scanning
-3. **Receipt Printing**: Generate professional receipts
-4. **Sales History**: View transaction history
-5. **Profile**: Manage personal account settings
+### Getting Started
+1. **Register an admin account** at `/register`
+2. **Login** at `/login`
+3. **Set up your store** in Settings
+4. **Add product categories** in Categories
+5. **Add products** in Products
+6. **Start selling** in POS
+
+### Daily Operations
+1. **Morning Setup**: Check stock levels and low stock alerts
+2. **Sales Processing**: Use POS interface for customer transactions
+3. **Inventory Management**: Update stock levels as needed
+4. **End of Day**: Review sales reports and analytics
+
+### Admin Tasks
+- **User Management**: Add/remove cashiers and manage permissions
+- **Store Settings**: Update branding, tax rates, and preferences
+- **Reports**: Generate sales reports and analyze performance
+- **Backup**: Regular database backups (recommended)
 
 ## 🎨 Customization
 
-### Store Branding
+### Branding
 - Upload your store logo in Settings
-- Customize store name and contact information
-- Set tax rates and currency preferences
-- Configure receipt footer text
+- Customize store name and information
+- Modify receipt templates
+- Adjust color themes (via CSS variables)
 
-### UI Themes
-The system supports light and dark themes with CSS custom properties. Modify the color scheme in `app/globals.css`.
+### Features
+- Add new product fields in the database schema
+- Customize receipt layouts in `components/ui/receipt.tsx`
+- Modify dashboard charts in `components/ui/charts.tsx`
+- Add new user roles in the authentication system
 
-## 📊 Analytics Features
+## 📊 API Endpoints
 
-- **Real-time Dashboard**: Live sales statistics and KPIs
-- **Sales Trends**: Daily, weekly, and monthly sales analysis
-- **Product Performance**: Best-selling products and categories
-- **Profit Tracking**: Gross profit and margin analysis
-- **Payment Methods**: Cash vs. card transaction analysis
-- **Stock Alerts**: Low inventory notifications
+### Authentication
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
 
-## 🔧 Configuration
+### Products
+- `GET /api/products` - List all products
+- `POST /api/products` - Create new product
+- `PUT /api/products/[id]` - Update product
+- `DELETE /api/products/[id]` - Delete product
 
-### Database Configuration
-The system is configured for Neon PostgreSQL with the following connection details:
-- Host: localhost (for development)
-- Database: rednxzte_ecomdb
-- User: rednxzte_ecomusers
-- Timezone: Asia/Bangkok
+### Sales
+- `GET /api/sales` - List sales transactions
+- `POST /api/sales` - Create new sale
+- `GET /api/sales/analytics` - Sales analytics data
 
-### Currency Settings
-Currently configured for LAK (Lao Kip). To change currency:
-1. Update the currency symbol in `lib/utils.ts`
-2. Modify the `formatCurrency` function
-3. Update database decimal precision if needed
+### Dashboard
+- `GET /api/dashboard/stats` - Dashboard statistics
+- `GET /api/dashboard/analytics` - Analytics data
 
 ## 🚀 Deployment
 
-### Vercel Deployment
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
+### Vercel (Recommended)
+1. **Connect your repository** to Vercel
+2. **Set environment variables** in Vercel dashboard
+3. **Deploy** - Vercel will automatically build and deploy
+
+### Manual Deployment
+1. **Build the application**
+   \`\`\`bash
+   pnpm build
+   \`\`\`
+
+2. **Start production server**
+   \`\`\`bash
+   pnpm start
+   \`\`\`
 
 ### Environment Variables for Production
 \`\`\`env
-DATABASE_URL=your_production_database_url
-JWT_SECRET=your_production_jwt_secret
+DATABASE_URL=your_production_neon_database_url
+JWT_SECRET=your_secure_jwt_secret
+NEXT_PUBLIC_APP_URL=https://your-domain.com
 \`\`\`
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Database Connection Issues**
+- Verify DATABASE_URL is correct
+- Check Neon database status
+- Ensure IP whitelist includes your deployment platform
+
+**Authentication Problems**
+- Verify JWT_SECRET is set
+- Check token expiration settings
+- Clear browser cookies and try again
+
+**Build Errors**
+- Run `pnpm install` to ensure all dependencies are installed
+- Check for TypeScript errors with `pnpm lint`
+- Verify all environment variables are set
+
+**Performance Issues**
+- Check database query performance
+- Monitor Neon database metrics
+- Optimize images and assets
+
+### Getting Help
+- Check the [Issues](https://github.com/ypadmin/Ecommerce-/issues) page
+- Review the documentation
+- Contact support for enterprise features
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Radix UI](https://www.radix-ui.com/) - UI components
+- [Neon](https://neon.tech/) - PostgreSQL database
+- [Vercel](https://vercel.com/) - Deployment platform
+- [Lucide](https://lucide.dev/) - Icon library
+
+## 📞 Support
 
 For support and questions:
-- Create an issue in the GitHub repository
-- Check the documentation in the `/docs` folder
-- Review the API endpoints in `/app/api`
-
-## 🔄 Updates
-
-The system is actively maintained with regular updates for:
-- Security patches
-- Feature enhancements
-- Bug fixes
-- Performance improvements
-
-## 📈 Roadmap
-
-Upcoming features:
-- [ ] Barcode scanner integration
-- [ ] Multi-store support
-- [ ] Advanced reporting
-- [ ] Mobile app companion
-- [ ] Integration with accounting software
-- [ ] Customer loyalty program
-- [ ] Inventory forecasting
-- [ ] Email notifications
+- 📧 Email: support@yourstore.com
+- 💬 Discord: [Join our community](https://discord.gg/yourserver)
+- 📖 Documentation: [docs.yourstore.com](https://docs.yourstore.com)
 
 ---
 
-Built with ❤️ for modern retail businesses
+**Built with ❤️ for retail businesses in Laos**
+
+*Supporting local businesses with modern technology*
