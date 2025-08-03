@@ -1,16 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary-green: #10b981;
-  --primary-green-dark: #059669;
-  --primary-green-light: #34d399;
-  --secondary-green: #d1fae5;
-  --accent-green: #6ee7b7;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -126,72 +119,204 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-size: 14px;
-  }
-  h1 {
-    @apply text-xl font-bold;
-  }
-  h2 {
-    @apply text-lg font-semibold;
-  }
-  h3 {
-    @apply text-base font-medium;
   }
 }
 
 @layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
   .btn-primary {
-    @apply bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
   }
+
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition-colors;
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
   }
-  .btn-danger {
-    @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors;
+
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
   }
-  .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
-  }
+
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-4;
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+  }
+
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .sidebar-nav {
+    @apply space-y-1;
+  }
+
+  .sidebar-nav-item {
+    @apply flex items-center rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors;
+  }
+
+  .sidebar-nav-item.active {
+    @apply bg-accent text-accent-foreground;
   }
 }
 
 @layer utilities {
-  /* Print styles for receipts */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  /* Print Styles */
   @media print {
+    .no-print {
+      display: none !important;
+    }
+
+    .print-only {
+      display: block !important;
+    }
+
+    body {
+      font-size: 12px;
+      line-height: 1.4;
+      color: black;
+      background: white;
+    }
+
+    .receipt {
+      width: 80mm;
+      margin: 0;
+      padding: 10px;
+      font-family: "Courier New", monospace;
+    }
+
+    .receipt-header {
+      text-align: center;
+      margin-bottom: 10px;
+      border-bottom: 1px dashed black;
+      padding-bottom: 5px;
+    }
+
+    .receipt-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 2px 0;
+      font-size: 11px;
+    }
+
+    .receipt-total {
+      border-top: 1px dashed black;
+      padding-top: 5px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    .receipt-footer {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 10px;
+    }
+
+    /* Hide everything except receipt when printing */
     body * {
       visibility: hidden;
     }
-    .print-area,
-    .print-area * {
+
+    .receipt,
+    .receipt * {
       visibility: visible;
     }
-    .print-area {
+
+    .receipt {
       position: absolute;
       left: 0;
       top: 0;
+    }
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .mobile-hidden {
+      display: none;
+    }
+
+    .mobile-full {
       width: 100%;
     }
-    @page {
-      size: 80mm auto;
-      margin: 0;
+
+    .mobile-stack {
+      flex-direction: column;
+    }
+
+    .mobile-text-sm {
+      font-size: 0.875rem;
     }
   }
-}
 
-/* Mobile-first responsive design */
-@media (max-width: 640px) {
-  body {
-    font-size: 12px;
+  /* Scrollbar Styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
   }
-  h1 {
-    @apply text-lg;
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-  h2 {
-    @apply text-base;
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 3px;
   }
-  h3 {
-    @apply text-sm;
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground));
   }
 }
