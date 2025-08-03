@@ -64,17 +64,14 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family:
+      system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html {
     scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-      "Droid Sans", "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -90,23 +87,18 @@
   h1 {
     font-size: 2.5rem;
   }
-
   h2 {
     font-size: 2rem;
   }
-
   h3 {
     font-size: 1.75rem;
   }
-
   h4 {
     font-size: 1.5rem;
   }
-
   h5 {
     font-size: 1.25rem;
   }
-
   h6 {
     font-size: 1rem;
   }
@@ -288,28 +280,12 @@
     @apply text-sm opacity-90;
   }
 
-  .sidebar {
-    @apply flex h-full w-64 flex-col bg-card border-r;
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-muted border-t-primary;
   }
 
-  .sidebar-header {
-    @apply flex items-center justify-between p-4 border-b;
-  }
-
-  .sidebar-content {
-    @apply flex-1 overflow-y-auto p-4;
-  }
-
-  .sidebar-nav {
-    @apply space-y-2;
-  }
-
-  .sidebar-nav-item {
-    @apply flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground;
-  }
-
-  .sidebar-nav-item.active {
-    @apply bg-accent text-accent-foreground;
+  .skeleton {
+    @apply animate-pulse rounded-md bg-muted;
   }
 
   .nav-link {
@@ -318,22 +294,6 @@
 
   .nav-link.active {
     @apply bg-accent text-accent-foreground;
-  }
-
-  .data-table {
-    @apply w-full border-collapse border border-border;
-  }
-
-  .data-table th {
-    @apply border border-border bg-muted/50 px-4 py-2 text-left font-medium;
-  }
-
-  .data-table td {
-    @apply border border-border px-4 py-2;
-  }
-
-  .data-table tr:hover {
-    @apply bg-muted/50;
   }
 
   .form-group {
@@ -350,14 +310,6 @@
 
   .form-error {
     @apply text-sm text-destructive;
-  }
-
-  .loading-spinner {
-    @apply animate-spin rounded-full border-2 border-muted border-t-primary;
-  }
-
-  .skeleton {
-    @apply animate-pulse rounded-md bg-muted;
   }
 
   .toast {
@@ -382,10 +334,6 @@
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
   .animate-spin {
     animation: spin 1s linear infinite;
   }
@@ -469,10 +417,6 @@
     scrollbar-width: thin;
   }
 
-  .scrollbar-thumb-rounded {
-    scrollbar-color: hsl(var(--muted-foreground)) transparent;
-  }
-
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
@@ -488,31 +432,6 @@
 
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background-color: hsl(var(--muted-foreground) / 0.8);
-  }
-
-  .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
-  }
-
-  .gradient-secondary {
-    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary) / 0.8));
-  }
-
-  .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .shadow-glow {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
 
   .transition-all {
@@ -538,26 +457,6 @@
   .focus-ring:focus {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
-  }
-
-  .status-online {
-    @apply bg-green-500;
-  }
-
-  .status-offline {
-    @apply bg-gray-500;
-  }
-
-  .status-busy {
-    @apply bg-red-500;
-  }
-
-  .status-away {
-    @apply bg-yellow-500;
-  }
-
-  .currency-lak::before {
-    content: "₭";
   }
 
   .mobile-only {
@@ -661,21 +560,6 @@
       padding-top: 5px;
     }
 
-    .receipt-barcode {
-      text-align: center;
-      margin: 10px 0;
-      font-family: "Libre Barcode 39", monospace;
-      font-size: 24px;
-    }
-
-    .page-break {
-      page-break-after: always;
-    }
-
-    .no-page-break {
-      page-break-inside: avoid;
-    }
-
     @page {
       margin: 0;
       size: 80mm auto;
@@ -686,35 +570,6 @@
   @media (max-width: 640px) {
     .container {
       padding: 0 0.5rem;
-    }
-
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      z-index: 50;
-      flex-direction: row;
-      border-r: none;
-      border-t: 1px solid hsl(var(--border));
-    }
-
-    .sidebar-content {
-      padding: 0.5rem;
-    }
-
-    .sidebar-nav {
-      display: flex;
-      justify-content: space-around;
-      space-y: 0;
-    }
-
-    .sidebar-nav-item {
-      flex-direction: column;
-      padding: 0.5rem;
-      text-align: center;
-      font-size: 0.75rem;
     }
 
     .mobile-nav {
@@ -776,38 +631,6 @@
     .form-group {
       margin-bottom: 1rem;
     }
-
-    .data-table {
-      font-size: 0.875rem;
-    }
-
-    .data-table th,
-    .data-table td {
-      padding: 0.5rem;
-    }
-
-    .pos-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .product-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-    }
-
-    .cart-item {
-      padding: 0.5rem;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-    }
-
-    .chart-container {
-      height: 200px;
-    }
   }
 
   /* Tablet Responsive */
@@ -815,48 +638,12 @@
     .container {
       padding: 0 1rem;
     }
-
-    .sidebar {
-      width: 200px;
-    }
-
-    .product-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .chart-container {
-      height: 300px;
-    }
   }
 
   /* Desktop Responsive */
   @media (min-width: 1025px) {
     .container {
       padding: 0 2rem;
-    }
-
-    .sidebar {
-      width: 256px;
-    }
-
-    .product-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .chart-container {
-      height: 400px;
-    }
-
-    .pos-grid {
-      grid-template-columns: 2fr 1fr;
     }
   }
 

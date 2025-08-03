@@ -19,6 +19,13 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
+  // Ensure proper handling of external packages
+  webpack: (config) => {
+    config.externals.push({
+      '@neondatabase/serverless': '@neondatabase/serverless',
+    })
+    return config
+  },
 }
 
 export default nextConfig
